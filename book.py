@@ -13,32 +13,44 @@ def scrape(file_path):  # location of books_2000.csv
 def data_clean(df):
     df.drop("Unnamed: 0", axis=1, inplace=True)
     df.drop_duplicates(inplace=True)
-    
+
     df['num_rating'] = df['num_rating'].astype(str)
     df['num_rating'] = df['num_rating'].apply(lambda x: x.replace(' ratings', ''))
     df['num_rating'] = df['num_rating'].astype(object)
 
-    ## sparse minirating column to get avg_rating and num_ratings
-    df['avg_rating'] = df['minirating'].apply(lambda x: (x.split('— ')[0]))
-    df['avg_rating'] = df['avg_rating'].apply(lambda x: x.replace(' avg rating', ''))
-    df['avg_rating'] = df['avg_rating'].apply(lambda x: x.replace(' ', ''))
+    df['num_reviews'] = df['num_reviews'].astype(str)
+    df['num_reviews'] = df['num_reviews'].apply(lambda x: x.replace(' reviews', ''))
+    df['num_reviews'] = df['num_reviews'].astype(object)
 
-    df['num_ratings'] = df['minirating'].apply(lambda x: (x.split('— ')[1]))
-    df['num_ratings'] = df['num_ratings'].apply(lambda x: x.replace(' ratings', ''))
+    df['pages'] = df['pages'].astype(str)
+    df['pages'] = df['pages'].apply(lambda x: x.replace(' pages', ''))
+    df['pages'] = df['pages'].astype(object)
+
+    df['genre'] = df[df.columns[10:13]].apply(lambda x: ','.join(x.dropna().astype(str)), axis=1)
+    df.drop(['genre_1', 'genre_2', 'genre_3'], axis=1, inplace=True)
+    df['genre'] = df['genre'].replace('', 'missing')
+
+    df['series'] = df['series'].astype(str)
+    df['series_binary'] = df['series'].apply(lambda x: 1 if '#' in x else 0)
+    df.drop('series', axis=1, inplace=True)
+
+    df['places'].replace(np.nan, 'missing', inplace=True)
+    df['places'].replace(['All Editions | Add a New Edition | Combine', ''], 'missing', inplace=True)
+
+    df['url'].replace(np.nan, 'missing', inplace=True) # 1532 values missing drop it
+
+    df['publish_year'] = df['publish_year'].astype(str)
+    keep_year = df['publish_year'].apply(lambda x: x.split('by')[0])
+    df['publish_year'] = keep_year.apply(lambda x: x.replace('Published ', ''))
+    df['publish_year'] = df['publish_year'].apply(lambda x: x.replace('st', ',').replace('th', ',').replace('rd', ','))
 
     return df
 
 
 def preprocessing(df):
-    df.avg_rating = pd.to_numeric(df.avg_rating, errors="coerce")
-    df.num_ratings = pd.to_numeric(df.num_ratings, errors="coerce")
-    # df = df.fillna(0)
-    # df['num_ratings'] = df['num_ratings'].astype(int)
-    # df['avg_rating'] = df['avg_rating'].astype(int)
-
     scaler = MinMaxScaler((1, 10))
-    df['minmax_norm_rating'] = scaler.fit_transform(df[['avg_rating']])
-    df['mean_norm_ratings'] = 1 + (df['avg_rating'] - df['avg_rating'].mean()) / (df['avg_rating'].max() - df['avg_rating'].min()) * 9
+    df['minmax_norm_rating'] = scaler.fit_transform(df[['rating']])
+    df['mean_norm_ratings'] = 1 + (df['rating'] - df['rating'].mean()) / (df['rating'].max() - df['rating'].min()) * 9
     return df
 
 def analyse(df):

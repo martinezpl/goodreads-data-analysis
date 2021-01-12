@@ -23,7 +23,7 @@ def init_driver(path):  # path = 'chromedriver.exe'
 
 
 def book_scrape(num_books: int):
-    df_url = pd.read_csv('Best_Books_of_the_Decade__2000s__6922_books_.csv', usecols='Title_URL')
+    df_url = pd.read_csv('just_for_links.csv', usecols='Title_URL')
     url_list = df_url['Title_URL'].tolist()
     books = []
     browser = init_driver(path='chromedriver.exe')  # location of chromedriver.exe
