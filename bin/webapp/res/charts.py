@@ -42,7 +42,8 @@ def plotly_line_vega(df):
 # 2. Can you compute numerically the correlation coefficient of these two columns (in this case whole dataframe)?
 def plot_correlation(df):
     corr = df.corr()
-    return corr.style.background_gradient(cmap='coolwarm')
+    corr.style.background_gradient(cmap='coolwarm')
+    return corr
 
 # 3. Visualise the avg_rating distribution.
 def avg_rating_dist(df):

@@ -11,7 +11,7 @@ def clean_data(df):
     df['places'] = list(map(lambda x: x[x.index('Setting') + 1:] if 'Setting' in x else None, list(map(lambda x: x[:x.index('Other')] if 'Other' in x else x, list(map(lambda x: x[:x.index('Literary')] if 'Literary' in x else x, [x.strip().split() for x in df['places']]))))))
     return df
    
-def preprocessing(df):
+def preprocess(df):
     df = clean_data(df)
     df['avg_rating'] = pd.to_numeric(df['minirating'].apply(lambda x: (x.split('— ')[0])).apply(lambda x: x.replace(' avg rating', '')).apply(lambda x: x.replace(' ', '').replace('reallylikedit', '').strip()), errors="coerce")
     df['num_ratings'] = pd.to_numeric(df['minirating'].apply(lambda x: (x.split('— ')[1])).apply(lambda x: x.replace(' ratings', '').replace(',','')), errors="coerce")

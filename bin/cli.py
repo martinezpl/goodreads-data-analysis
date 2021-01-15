@@ -1,7 +1,7 @@
 import click
 import pandas as pd
 from scrapper.scrapper import scrap_goodreads_table
-from scrapper.preprocess import preprocessing
+from scrapper.preprocess import preprocess
 from webapp.res.charts import *
 
 @click.group()
@@ -16,7 +16,7 @@ def cli():
 @click.argument('url')
 def scrap_table(pages, f, name, pos, url):
     fn = name + '.' + f
-    df = preprocessing(scrap_goodreads_table(pages, url, pos))
+    df = preprocess(scrap_goodreads_table(pages, url, pos))
     if f == 'csv':
         df.to_csv(fn)
     elif f == 'json':
@@ -37,14 +37,14 @@ def analyze(corr, ratdist, fitdist, data):
         raise ValueError(f"File format not supported. Supported formats: {supported_formats}")
     else:
         if f == 'csv':
-            df = pd.read_csv(data)
+            df = pd.read_csv(data, index_col=[0])
         elif f == 'json':
             df = pd.read_json(data)
         elif f == 'pkl':
             df = pd.read_pickle(data)
 
     if corr:
-        plot_correlation(df).show()
+       print(plot_correlation(df))
     
     if ratdist:
         all_three_dist(df).show()
