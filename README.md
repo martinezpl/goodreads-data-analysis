@@ -11,8 +11,11 @@ Needed packages: click, numpy, pandas, scikit-learn, requests, bs4
 1. Download the repo.
 2. Set the directory to /bin in the terminal. 
 3. Type in *python cli.py scrap-table --help* for further instructions.
+
 **For a quick test:**
+
 *python cli.py scrap-table --pos 10 https://www.goodreads.com/list/show/5.Best_Books_of_the_Decade_2000s*
+
 is going to scrap first 10 positions of the list in given URL and generate scrapped_data.csv in the same folder.
 
 
