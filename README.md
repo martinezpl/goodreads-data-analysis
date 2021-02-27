@@ -1,10 +1,9 @@
-# Build Week #1
-
-### Scrapping/analysis tool for www.goodreads.com. Features:
-
-#### - CLI providing universal scrapper for goodreads lists.
-#### - Customizable streamlit-based web application hosted on heroku: https://goodreads-books.herokuapp.com/
-#### - Various analysis functions providing plots and juxtapositions.
+# Scrapping/analysis tool for www.goodreads.com. 
+## Features:
+- Universal web-scrapper for goodreads table-data.
+- Various analysis functions providing plots and juxtapositions.
+- Streamlit web application hosted on Heroku, describing the project:
+> https://goodreads-books.herokuapp.com/
 
 ### How to run the scrapper?
 Needed packages: click, numpy, pandas, scikit-learn, requests, bs4
